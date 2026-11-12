@@ -100,15 +100,42 @@
  .afterword { font-size: .7rem; }
 }
 @media (max-height: 650px) and (min-width: 601px) { .scene { width: min(70%, 680px); } .viewport { gap: 9px; } }
-@media (max-height: 539px) {
- .track { height: auto; }
- .viewport { position: relative; top: auto; height: auto; padding: 20px 0; }
- .scene { width: min(100%, 680px); margin-top: 0; }
- .caption, .lid { display: none !important; }
-}
 @media (prefers-reduced-motion: reduce) {
  .track { height: auto; }
  .viewport { position: relative; top: auto; height: auto; padding: 24px 0; }
  .lid, .caption { display: none !important; }
  .root *, .root *::before, .root *::after { animation: none !important; }
 }
+
+/* The smoker is rendered as one 3D scene: no HTML text or photo lid overlays. */
+.viewport { gap: 10px; }
+.scene { width: 100%; height: calc(100svh - var(--smoker-header-height) - 215px); min-height: 310px; aspect-ratio: auto; margin: 0; perspective: none; container-type: normal; }
+.scene canvas { display: block; width: 100%; height: 100%; touch-action: pan-y; }
+.accessibleTitle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: -1px; padding: 0; border: 0; }
+@media (max-width: 600px) {
+ .scene { width: 100%; height: auto; min-height: 0; aspect-ratio: 1.5; }
+ .viewport { gap: 12px; min-height: 470px; }
+}
+@media (max-height: 650px) and (min-width: 601px) {
+ .viewport { min-height: 550px; }
+ .scene { width: 100%; height: 340px; min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+ .scene { height: min(65vw, 600px); }
+}
+
+@media (max-width:600px){.viewport {justify-content:flex-start;padding-top:24px;}}
+
+
+/* Only the smoker scene has a photographic backdrop. The rest uses brand cream. */
+.root, .track, .viewport { background: #F8F4EE; color: #3B2316; }
+.scene { background: #EFE8DD url('/images/bbq-light-workshop-v8.webp') center bottom / cover no-repeat; }
+.info { padding: 10px 22px; border-radius: 0; background: transparent; backdrop-filter: none; }
+.eyebrow { color: #9E341E; }
+.description { color: #6E5649; text-shadow: none; }
+.secondary { background: #FFFDF9; color: #3B2316; border-color: #DFD4C5; }
+.secondary:hover { background: #EFE8DD; }
+.caption { color: #6E5649; text-shadow: none; }
+.caption button { background: #FFFDF9; color: #3B2316; border-color: #DFD4C5; }
+.caption button:hover { background: #EFE8DD; }
+@media (max-width:600px) { .info { margin-inline: 12px; padding-inline: 16px; } }

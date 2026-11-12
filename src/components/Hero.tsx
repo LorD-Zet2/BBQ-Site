@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { shop } from "@/config/shop";
 import styles from "./Hero.module.css";
+import SmokerScene from "./SmokerScene";
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
 const ease = (value: number) => 1 - Math.pow(1 - clamp(value), 3);
@@ -13,7 +14,7 @@ export function Hero() {
   const headerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLHeadingElement>(null);
   const [replay, setReplay] = useState(0);
 
   useEffect(() => {
@@ -41,14 +42,14 @@ export function Hero() {
       frame = 0;
       if (!active || !root || !track || !viewport) return;
       const reduced = media.matches;
-      const compact = window.innerHeight < 540;
+      const compact = false;
       root.dataset.motion = reduced || compact ? "off" : "on";
       if (reduced || compact) {
         root.style.setProperty("--opening", "1");
         root.style.setProperty("--lid-angle", "100deg");
         root.style.setProperty("--reveal", "1");
         root.style.setProperty("--lid-label", "0");
-        if (contentRef.current) contentRef.current.inert = false;
+
         return;
       }
       if (ready && startedAt === null) startedAt = now;
@@ -62,7 +63,7 @@ export function Hero() {
       root.style.setProperty("--lid-angle", `${(100 * opening).toFixed(2)}deg`);
       root.style.setProperty("--reveal", clamp((opening - 0.2) / 0.55).toFixed(4));
       root.style.setProperty("--lid-label", clamp(1 - opening * 4).toFixed(4));
-      if (contentRef.current) contentRef.current.inert = opening < 0.45;
+
       if (ready && entry < 1) schedule();
     }
 
@@ -70,22 +71,10 @@ export function Hero() {
       if (active && !frame) frame = window.requestAnimationFrame(draw);
     }
 
-    const images = Array.from(root.querySelectorAll<HTMLImageElement>("[data-smoker-image]"));
-    const loaded = images.map((image) => image.complete ? Promise.resolve() : new Promise<void>((resolve) => {
-      const finish = () => { remove(); resolve(); };
-      const remove = () => {
-        image.removeEventListener("load", finish);
-        image.removeEventListener("error", finish);
-      };
-      image.addEventListener("load", finish);
-      image.addEventListener("error", finish);
-      imageCleanups.push(remove);
-    }));
-    void Promise.all(loaded).then(() => {
-      if (!active) return;
-      ready = true;
-      schedule();
-    });
+    const onReady = () => { ready = true; schedule(); };
+    window.addEventListener("smoker-ready", onReady);
+    imageCleanups.push(() => window.removeEventListener("smoker-ready", onReady));
+    if (root.dataset.sceneReady === "true") onReady();
 
     const observer = new ResizeObserver(measure);
     observer.observe(header);
@@ -104,12 +93,12 @@ export function Hero() {
       window.removeEventListener("resize", measure);
       window.removeEventListener("pageshow", schedule);
       media.removeEventListener("change", schedule);
-      if (contentRef.current) contentRef.current.inert = false;
+
     };
   }, [replay]);
 
   return (
-    <div id="top" ref={rootRef} className={styles.root}
+    <div id="top" ref={rootRef} className={styles.root} data-smoker-root="true"
       style={{ "--smoker-header-height": shop.orderingOpen ? "74px" : "110px" } as CSSProperties}>
       <div ref={headerRef} className={styles.headerWrap}>
         {!shop.orderingOpen && <div className={styles.preview}>Знакомьтесь с меню · Приём онлайн-заказов скоро откроется</div>}
@@ -125,34 +114,9 @@ export function Hero() {
       </div>
       <section ref={trackRef} className={styles.track} aria-labelledby="hero-title">
         <div ref={viewportRef} className={styles.viewport}>
-          <div className={styles.scene} onPointerMove={(event) => {
-            const bounds = event.currentTarget.getBoundingClientRect();
-            event.currentTarget.style.setProperty("--heat-x", `${((event.clientX - bounds.left) / bounds.width) * 100}%`);
-          }} onPointerDown={(event) => {
-            event.currentTarget.dataset.stoked = "true";
-          }} onPointerUp={(event) => { event.currentTarget.dataset.stoked = "false"; }}
-          onPointerLeave={(event) => { event.currentTarget.dataset.stoked = "false"; }}
-          onPointerCancel={(event) => { event.currentTarget.dataset.stoked = "false"; }}>
-          <img className={styles.interior} src="/images/smoker-interior-v3.webp" alt=""
-            width={1672} height={941} fetchPriority="high" data-smoker-image="interior" />
-          <div className={styles.shade} aria-hidden="true" />
-          <div className={styles.emberGlow} aria-hidden="true" />
-          <div className={styles.smoke} aria-hidden="true"><i /><i /><i /><i /></div>
-          <div className={styles.flames} aria-hidden="true">{[0,1,2,3,4,5].map((n) => <i key={n} />)}</div>
-          <div className={styles.sparks} aria-hidden="true">{[0,1,2,3,4].map((n) => <i key={n} />)}</div>
-          <div ref={contentRef} className={styles.content}>
-            
-            <h1 id="hero-title" className={styles.slogan}>
-              <span>Вкус —</span><span>который</span><span className={styles.sloganLast}>стоит ждать.</span>
-            </h1>
-          </div>
-          <div className={styles.lid} aria-hidden="true">
-            <img src="/images/smoker-lid-v4.webp" alt="" width={1672} height={941}
-              fetchPriority="high" data-smoker-image="lid" />
-            <div className={styles.glassGlow} />
-            <div className={styles.lidBack} />
-            <div className={styles.lidBrand}><span>BBQ <small>in MHK</small></span></div>
-          </div>
+          <div className={styles.scene}>
+            <SmokerScene />
+            <h1 ref={contentRef} id="hero-title" className={styles.accessibleTitle}>Вкус — который стоит ждать.</h1>
           </div>
           <div className={styles.info}>
             <p className={styles.eyebrow}>Махачкала · 100% Халяль · Настоящее BBQ</p>

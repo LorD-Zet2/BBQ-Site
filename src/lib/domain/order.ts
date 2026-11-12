@@ -23,14 +23,14 @@ export function isChannelConfigured(channel: OrderInput["channel"]) {
 
 export function calculateOrder(input: OrderInput) {
   const parsed = orderSchema.parse(input);
-  if (!shop.orderingOpen) throw new Error("РџСЂРёС‘Рј Р·Р°РєР°Р·РѕРІ РІСЂРµРјРµРЅРЅРѕ Р·Р°РєСЂС‹С‚");
+  if (!shop.orderingOpen) throw new Error("Приём заказов временно закрыт");
   const portion = shop.portions.find((item) => item.active && item.id === parsed.portionId);
   const sauce = shop.sauces.find((item) => item.active && item.id === parsed.sauceId);
   const zone = shop.deliveryZones.find((item) => item.active && item.id === parsed.zoneId);
   const timeSlot = shop.timeSlots.find((item) => item.active && item.id === parsed.timeSlotId);
-  if (!portion || !sauce || !zone || !timeSlot) throw new Error("Р’С‹Р±СЂР°РЅРЅС‹Р№ РІР°СЂРёР°РЅС‚ Р±РѕР»СЊС€Рµ РЅРµРґРѕСЃС‚СѓРїРµРЅ");
-  if (parsed.quantity > portion.maxQuantity) throw new Error("РќРµРґРѕРїСѓСЃС‚РёРјРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕСЂС†РёР№");
-  if (!isChannelConfigured(parsed.channel)) throw new Error("Р­С‚РѕС‚ РјРµСЃСЃРµРЅРґР¶РµСЂ РїРѕРєР° РЅРµ РїРѕРґРєР»СЋС‡С‘РЅ");
+  if (!portion || !sauce || !zone || !timeSlot) throw new Error("Выбранный вариант больше недоступен");
+  if (parsed.quantity > portion.maxQuantity) throw new Error("Недопустимое количество порций");
+  if (!isChannelConfigured(parsed.channel)) throw new Error("Этот мессенджер пока не подключён");
   const meatRubles = portion.priceRubles * parsed.quantity;
   const sauceRubles = sauce.pricePerPortionRubles * parsed.quantity;
   const deliveryRubles = zone.feeRubles;
@@ -45,25 +45,25 @@ export function buildOrderMessage(input: OrderInput, reference: string) {
   return {
     ...order,
     messageText: [
-      `Р—РґСЂР°РІСЃС‚РІСѓР№С‚Рµ! РҐРѕС‡Сѓ СЃРѕРіР»Р°СЃРѕРІР°С‚СЊ Р·Р°РєР°Р· ${shop.brandName}.`,
-      `РќРѕРјРµСЂ Р·Р°СЏРІРєРё: ${reference}`,
-      `Р“РѕРІСЏР¶СЊРё СЂС‘Р±СЂР° РєР°Р»СЊР±Рё: ${order.portion.weightGrams} Рі Г— ${order.parsed.quantity}`,
-      `РћР±С‰РёР№ РІРµСЃ РіРѕС‚РѕРІРѕРіРѕ РїСЂРѕРґСѓРєС‚Р° СЃ РєРѕСЃС‚СЏРјРё: ${order.portion.weightGrams * order.parsed.quantity} Рі`,
-      "100% РҐР°Р»СЏР»СЊ. 7вЂ“8 С‡Р°СЃРѕРІ С‚РѕРјР»РµРЅРёСЏ РІ Р¶РёРІРѕРј РґС‹РјСѓ.",
-      `РЎРѕСѓСЃ: ${order.sauce.title} (${order.sauce.portionLabel}) Г— ${order.parsed.quantity}`,
-      `Р”РѕСЃС‚Р°РІРєР°: ${order.zone.title}`,
-      `Р–РµР»Р°РµРјРѕРµ РІСЂРµРјСЏ: ${order.timeSlot.title}`,
-      `РњСЏСЃРѕ: ${order.meatRubles} в‚Ѕ`,
-      `РЎРѕСѓСЃ: ${order.sauceRubles} в‚Ѕ`,
-      `Р”РѕСЃС‚Р°РІРєР°: ${order.deliveryRubles} в‚Ѕ`,
-      `РС‚РѕРіРѕ: ${order.totalRubles} в‚Ѕ`,
-      "РџРѕРґС‚РІРµСЂРґРёС‚Рµ, РїРѕР¶Р°Р»СѓР№СЃС‚Р°, РЅР°Р»РёС‡РёРµ, РѕРєРѕРЅС‡Р°С‚РµР»СЊРЅСѓСЋ СЃС‚РѕРёРјРѕСЃС‚СЊ Рё РІСЂРµРјСЏ.",
+      `Здравствуйте! Хочу согласовать заказ ${shop.brandName}.`,
+      `Номер заявки: ${reference}`,
+      `Говяжьи рёбра кальби: ${order.portion.weightGrams} г × ${order.parsed.quantity}`,
+      `Общий вес готового продукта с костями: ${order.portion.weightGrams * order.parsed.quantity} г`,
+      "100% Халяль. 7–8 часов томления в живом дыму.",
+      `Соус: ${order.sauce.title} (${order.sauce.portionLabel}) × ${order.parsed.quantity}`,
+      `Доставка: ${order.zone.title}`,
+      `Желаемое время: ${order.timeSlot.title}`,
+      `Мясо: ${order.meatRubles} ₽`,
+      `Соус: ${order.sauceRubles} ₽`,
+      `Доставка: ${order.deliveryRubles} ₽`,
+      `Итого: ${order.totalRubles} ₽`,
+      "Подтвердите, пожалуйста, наличие, окончательную стоимость и время.",
     ].join("\n"),
   };
 }
 
 export function buildMessengerUrl(channel: OrderInput["channel"], messageText: string) {
-  if (!isChannelConfigured(channel)) throw new Error("Р­С‚РѕС‚ РјРµСЃСЃРµРЅРґР¶РµСЂ РїРѕРєР° РЅРµ РїРѕРґРєР»СЋС‡С‘РЅ");
+  if (!isChannelConfigured(channel)) throw new Error("Этот мессенджер пока не подключён");
   const url = new URL(channel === "whatsapp"
     ? `https://wa.me/${shop.whatsappDigits}`
     : `https://t.me/${shop.telegramUsername}`);

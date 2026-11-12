@@ -9,7 +9,7 @@
   background: var(--bbq-bg);
   color: var(--bbq-text);
   border-block: 1px solid var(--bbq-line);
-  font-family: var(--font-body, "BBQ Sans"), "Segoe UI", Arial, sans-serif;
+  font-family: "Manrope", "Segoe UI", Arial, sans-serif;
   line-height: 1.55;
   scroll-margin-top: 88px;
 }
@@ -22,7 +22,7 @@
 .container { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
 .header { max-width: 720px; margin-bottom: 26px; }
 .kicker { margin: 0 0 10px; color: var(--bbq-accent); font-size: .73rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
-.title { margin: 0; font: 900 clamp(2rem, 5vw, 3.5rem)/1.1 var(--font-display, "BBQ Slab"), Georgia, serif; letter-spacing: -.035em; }
+.title { margin: 0; font: 900 clamp(2rem, 5vw, 3.5rem)/1.1 "Roboto Slab", Georgia, serif; letter-spacing: -.035em; }
 .lead { margin: 16px 0 0; color: var(--bbq-muted); max-width: 580px; }
 .notice { margin: 0 0 22px; padding: 15px 20px; border: 1px solid var(--bbq-line); border-left: 4px solid var(--bbq-accent); border-radius: 12px; background: var(--bbq-surface); font-size: .9rem; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 24px; align-items: start; }
@@ -63,7 +63,7 @@
 .fire { background: #FFFFFF; filter: grayscale(1); opacity: .4; }
 .fireActive { background: #F4D8B9; }
 .summary { position: sticky; top: 88px; padding: 26px; box-shadow: 0 14px 38px #3B23160A; }
-.summary h3 { margin: 0; font: 800 1.65rem/1.2 var(--font-display, "BBQ Slab"), Georgia, serif; }
+.summary h3 { margin: 0; font: 800 1.65rem/1.2 "Roboto Slab", Georgia, serif; }
 .summaryWeight { margin: 20px 0; font-size: 1.65rem; font-weight: 800; }
 .summaryWeight > span { display: block; font-size: .8rem; font-weight: 500; color: var(--bbq-muted); }
 .breakdown { margin: 0; padding: 16px 0; border-block: 1px dashed var(--bbq-line); }
