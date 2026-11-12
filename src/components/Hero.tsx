@@ -45,7 +45,7 @@ export function Hero() {
       root.dataset.motion = reduced || compact ? "off" : "on";
       if (reduced || compact) {
         root.style.setProperty("--opening", "1");
-        root.style.setProperty("--lid-angle", "-100deg");
+        root.style.setProperty("--lid-angle", "100deg");
         root.style.setProperty("--reveal", "1");
         root.style.setProperty("--lid-label", "0");
         if (contentRef.current) contentRef.current.inert = false;
@@ -59,7 +59,7 @@ export function Hero() {
       const closing = ease((scrolled - 0.08) / 0.78);
       const opening = entry * (1 - closing);
       root.style.setProperty("--opening", opening.toFixed(4));
-      root.style.setProperty("--lid-angle", `${(-100 * opening).toFixed(2)}deg`);
+      root.style.setProperty("--lid-angle", `${(100 * opening).toFixed(2)}deg`);
       root.style.setProperty("--reveal", clamp((opening - 0.2) / 0.55).toFixed(4));
       root.style.setProperty("--lid-label", clamp(1 - opening * 4).toFixed(4));
       if (contentRef.current) contentRef.current.inert = opening < 0.45;
@@ -125,26 +125,42 @@ export function Hero() {
       </div>
       <section ref={trackRef} className={styles.track} aria-labelledby="hero-title">
         <div ref={viewportRef} className={styles.viewport}>
+          <div className={styles.scene} onPointerMove={(event) => {
+            const bounds = event.currentTarget.getBoundingClientRect();
+            event.currentTarget.style.setProperty("--heat-x", `${((event.clientX - bounds.left) / bounds.width) * 100}%`);
+          }} onPointerDown={(event) => {
+            event.currentTarget.dataset.stoked = "true";
+          }} onPointerUp={(event) => { event.currentTarget.dataset.stoked = "false"; }}
+          onPointerLeave={(event) => { event.currentTarget.dataset.stoked = "false"; }}
+          onPointerCancel={(event) => { event.currentTarget.dataset.stoked = "false"; }}>
           <img className={styles.interior} src="/images/smoker-interior-v3.webp" alt=""
             width={1672} height={941} fetchPriority="high" data-smoker-image="interior" />
           <div className={styles.shade} aria-hidden="true" />
           <div className={styles.emberGlow} aria-hidden="true" />
-          <div className={styles.smoke} aria-hidden="true"><i /><i /></div>
+          <div className={styles.smoke} aria-hidden="true"><i /><i /><i /><i /></div>
+          <div className={styles.flames} aria-hidden="true">{[0,1,2,3,4,5].map((n) => <i key={n} />)}</div>
+          <div className={styles.sparks} aria-hidden="true">{[0,1,2,3,4].map((n) => <i key={n} />)}</div>
           <div ref={contentRef} className={styles.content}>
-            <p className={styles.eyebrow}>Махачкала · 100% Халяль · Настоящее BBQ</p>
+            
             <h1 id="hero-title" className={styles.slogan}>
               <span>Вкус —</span><span>который</span><span className={styles.sloganLast}>стоит ждать.</span>
             </h1>
+          </div>
+          <div className={styles.lid} aria-hidden="true">
+            <img src="/images/smoker-lid-v4.webp" alt="" width={1672} height={941}
+              fetchPriority="high" data-smoker-image="lid" />
+            <div className={styles.glassGlow} />
+            <div className={styles.lidBack} />
+            <div className={styles.lidBrand}><span>BBQ <small>in MHK</small></span></div>
+          </div>
+          </div>
+          <div className={styles.info}>
+            <p className={styles.eyebrow}>Махачкала · 100% Халяль · Настоящее BBQ</p>
             <p className={styles.description}>Говяжьи рёбра кальби.<br />7–8 часов в живом дыму — ради этого момента.</p>
             <div className={styles.actions}>
               <a href="#cat-main" className={styles.primary}>Посмотреть меню ↗</a>
               <a href="#ribs" className={styles.secondary}>Собрать свой BBQ →</a>
             </div>
-          </div>
-          <div className={styles.lid} aria-hidden="true">
-            <img src="/images/smoker-lid-v3.webp" alt="" width={1672} height={941}
-              fetchPriority="high" data-smoker-image="lid" />
-            <div className={styles.lidBrand}><span>BBQ <small>in MHK</small></span><p>Хорошие вещи требуют времени.</p></div>
           </div>
           <div className={styles.caption}>
             <span>Листайте вниз — смокер закроется <span aria-hidden="true">↓</span></span>
