@@ -1,11 +1,27 @@
-@import url('https://googleapis.com');
+/* Шрифты загружаются с самого сайта, включая кириллицу. */
+@font-face {
+  font-family: "BBQ Slab";
+  src: url("/fonts/BBQ-Slab.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "BBQ Sans";
+  src: url("/fonts/BBQ-Sans.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+}
 
 :root {
+  --font-display: "BBQ Slab", Georgia, serif;
+  --font-body: "BBQ Sans", "Segoe UI", Arial, sans-serif;
   --bg: #F8F4EE;
   --surface: #EFE8DD;
   --surface-raised: #FFFFFF;
   --text: #3B2316;
-  --muted: #6B5346;
+  --muted: #6E5649;
   --accent: #9E341E;
   --accent-strong: #7E2614;
   --accent-ink: #FFFDF9;
@@ -22,12 +38,12 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-body);
   line-height: 1.55;
   overflow-x: hidden;
 }
 a { color: inherit; }
-button, input, select, textarea { font-family: 'Montserrat', sans-serif; }
+button, input, select, textarea { font-family: var(--font-body); }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 
 .skip-link {
@@ -49,7 +65,7 @@ button, input, select, textarea { font-family: 'Montserrat', sans-serif; }
 }
 .section-title {
   margin: 0;
-  font-family: 'Oswald', sans-serif;
+  font-family: var(--font-display);
   font-weight: 700;
   text-transform: uppercase;
   font-size: clamp(2rem, 5vw, 3.3rem);
@@ -92,7 +108,7 @@ button, input, select, textarea { font-family: 'Montserrat', sans-serif; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Oswald', sans-serif;
+  font-family: var(--font-display);
   font-size: 1.45rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -166,7 +182,7 @@ button, input, select, textarea { font-family: 'Montserrat', sans-serif; }
 }
 .hero h1 {
   margin: 0;
-  font-family: 'Oswald', sans-serif;
+  font-family: var(--font-display);
   text-transform: uppercase;
   font-size: clamp(2.4rem, 6.5vw, 4.4rem);
   line-height: 1.02;
@@ -245,7 +261,7 @@ button, input, select, textarea { font-family: 'Montserrat', sans-serif; }
   border: 1.5px solid var(--line);
   background: var(--surface-raised);
   color: var(--text);
-  font-family: 'Oswald', sans-serif;
+  font-family: var(--font-display);
   text-transform: uppercase;
   letter-spacing: .04em;
   font-weight: 700;
@@ -271,7 +287,7 @@ button, input, select, textarea { font-family: 'Montserrat', sans-serif; }
 }
 .menu-block-title {
   margin: 0;
-  font-family: 'Oswald', sans-serif;
+  font-family: var(--font-display);
   text-transform: uppercase;
   font-size: clamp(1.75rem, 3.8vw, 2.4rem);
   font-weight: 700;
@@ -318,7 +334,7 @@ button, input, select, textarea { font-family: 'Montserrat', sans-serif; }
 }
 .menu-card h3 {
   margin: 0 0 8px;
-  font-family: 'Oswald', sans-serif;
+  font-family: var(--font-display);
   text-transform: uppercase;
   font-size: 1.35rem;
   font-weight: 700;
@@ -340,14 +356,14 @@ button, input, select, textarea { font-family: 'Montserrat', sans-serif; }
   border-top: 1px solid var(--line);
 }
 .menu-price {
-  font-family: 'Oswald', sans-serif;
+  font-family: var(--font-display);
   font-size: 1.35rem;
   font-weight: 700;
   color: var(--text);
 }
 .menu-weight {
   margin-left: 8px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   font-size: .82rem;
   font-weight: 600;
   color: var(--muted);
@@ -411,7 +427,7 @@ button, input, select, textarea { font-family: 'Montserrat', sans-serif; }
 }
 .edu-body h3 {
   margin: 0 0 8px;
-  font-family: 'Oswald', sans-serif;
+  font-family: var(--font-display);
   text-transform: uppercase;
   font-size: 1.35rem;
   font-weight: 700;
@@ -431,7 +447,7 @@ button, input, select, textarea { font-family: 'Montserrat', sans-serif; }
 }
 .compare-box h3 {
   margin: 0 0 18px;
-  font-family: 'Oswald', sans-serif;
+  font-family: var(--font-display);
   text-transform: uppercase;
   font-size: 1.4rem;
   font-weight: 700;
@@ -455,7 +471,7 @@ button, input, select, textarea { font-family: 'Montserrat', sans-serif; }
 .compare-item strong {
 display: block;
 margin-bottom: 6px;
-font-family: 'Oswald', sans-serif;
+font-family: var(--font-display);
 text-transform: uppercase;
 font-size: 1.15rem;
 letter-spacing: .02em;
@@ -506,7 +522,7 @@ justify-content: center;
 }
 .insta-title {
 margin: 0 0 12px;
-font-family: 'Oswald', sans-serif;
+font-family: var(--font-display);
 font-size: clamp(1.8rem, 4vw, 2.5rem);
 font-weight: 700;
 color: var(--text);
@@ -546,14 +562,14 @@ content: 'ШАГ 0' counter(step);
 display: inline-block;
 margin-bottom: 6px;
 color: var(--accent);
-font-family: 'Oswald', sans-serif;
+font-family: var(--font-display);
 font-weight: 700;
 font-size: .9rem;
 letter-spacing: .06em;
 }
 .step h3 {
 margin: 0 0 6px;
-font-family: 'Oswald', sans-serif;
+font-family: var(--font-display);
 text-transform: uppercase;
 font-size: 1.18rem;
 }
@@ -623,3 +639,98 @@ details p { margin: 0 0 18px; color: var(--muted); }
 .insta-card { grid-template-columns: 1fr; }
 .insta-media { aspect-ratio: 16 / 10; }
 }
+
+/* Единая типографика, включая формы и страницы с правилами. */
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); text-wrap: balance; }
+button, input, select, textarea, output { font-family: var(--font-body); }
+.menu-price, .menu-weight { font-family: var(--font-body); font-variant-numeric: tabular-nums; }
+.section-title, .menu-block-title { letter-spacing: -.025em; line-height: 1.17; }
+.menu-card h3, .edu-body h3, .step h3 { line-height: 1.3; }
+.header-order { flex-shrink: 0; padding: 11px 16px; border: 1px solid var(--line); border-radius: 10px; color: var(--accent); text-decoration: none; font-size: .82rem; font-weight: 800; }
+.header-order:hover { background: var(--surface); }
+.bbq-hero { overflow: hidden; padding: 30px 0 0; background: radial-gradient(ellipse at 80% 36%, #EFE2CF 0%, transparent 55%), var(--bg); border-bottom: 1px solid var(--line); }
+.bbq-hero > .container { max-width: 1120px; width: min(1120px, calc(100% - 40px)); }
+.bbq-hero-brand { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 32px; }
+.bbq-hero-brand img { display: block; width: 112px; height: 112px; object-fit: contain; border-radius: 50%; box-shadow: 0 8px 26px #3B231612; }
+.bbq-hero-brand p { margin: 0; color: var(--muted); font-size: .74rem; font-weight: 700; text-align: center; }
+.bbq-hero-brand p span { padding-inline: 6px; color: var(--accent); }
+.bbq-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 44px; padding-bottom: 34px; }
+.bbq-hero-copy { min-width: 0; }
+.bbq-hero-kicker { display: flex; align-items: center; gap: 8px; margin: 0 0 18px; font-size: .69rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--accent); }
+.bbq-hero-kicker > span { width: 7px; height: 7px; flex-shrink: 0; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px #9E341E12; }
+.bbq-hero h1 { margin: 0; color: var(--text); font-family: var(--font-display); font-size: clamp(2.55rem, 5.4vw, 4.25rem); font-weight: 900; line-height: 1.08; letter-spacing: -.045em; text-transform: none; }
+.bbq-hero h1 > span { color: var(--accent); }
+.bbq-hero-description { max-width: 490px; margin: 22px 0; font-size: .93rem; line-height: 1.75; color: var(--muted); }
+.bbq-hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+.bbq-hero-actions .cta { gap: 22px; font-size: .85rem; padding-inline: 20px; }
+.bbq-hero-textlink { font-size: .82rem; font-weight: 800; text-underline-offset: 5px; }
+.bbq-hero-facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.bbq-hero-facts > span { padding: 6px 9px; border: 1px solid var(--line); border-radius: 6px; font-size: .62rem; font-weight: 800; text-transform: uppercase; letter-spacing: .025em; }
+.bbq-smoker-story { min-width: 0; padding: 24px 24px 20px; border: 1px solid #DFD4C5; border-radius: 22px; background: linear-gradient(160deg, #FFFDF9, #EFE8DD); box-shadow: 0 24px 70px #3B23160C; }
+.bbq-smoker-caption { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-size: .61rem; color: var(--muted); }
+.bbq-smoker-caption > span:first-child { font-weight: 800; letter-spacing: .14em; color: var(--accent); }
+.bbq-smoker-scene { position: relative; height: 285px; margin: 20px 0 0; perspective: 1000px; }
+.bbq-smoker-scene::after { content: ""; position: absolute; left: 6%; right: 6%; bottom: 9px; height: 16px; border-radius: 50%; background: #3B231623; filter: blur(9px); }
+.bbq-smoker-chamber { position: absolute; inset: 72px 6% auto; height: 136px; overflow: hidden; border: 7px solid #3B2316; border-radius: 45% 45% 12px 12px; background: #3B2316; }
+.bbq-smoker-chamber img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center 55%; filter: brightness(.88) saturate(.9); }
+.bbq-smoker-food-label { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); white-space: nowrap; padding: 4px 9px; border-radius: 5px; background: #F8F4EEF0; color: #3B2316; font-size: .6rem; font-weight: 800; }
+.bbq-smoker-chimney { position: absolute; right: 10%; top: 29px; width: 22px; height: 85px; border: 2px solid #2D211A; border-radius: 4px; background: linear-gradient(90deg, #493428, #291E18); }
+.bbq-smoker-chimney::before { content: ""; position: absolute; top: -5px; left: -5px; width: 28px; height: 7px; background: #3B2316; border-radius: 3px; }
+.bbq-smoker-lid { position: absolute; z-index: 3; inset: 65px 5% auto; height: 143px; border: 2px solid #2D211A; border-radius: 48% 48% 10px 10px; background: radial-gradient(ellipse at 30% 5%, #705240, transparent 65%), linear-gradient(170deg, #493428, #291E18); box-shadow: inset 0 2px 2px #BBA38B60, 0 4px 8px #3B231630; transform-origin: center 9%; transition: transform 1.2s cubic-bezier(.22,.7,.2,1), filter 1.2s; backface-visibility: visible; }
+.bbq-smoker-lid::after { content: ""; position: absolute; inset: 8px; border: 1px solid #BBA38B35; border-radius: inherit; pointer-events: none; }
+.bbq-smoker-emblem { position: absolute; top: 47px; left: 50%; transform: translateX(-50%); color: #EFE8DD; font-family: var(--font-display); font-weight: 900; font-size: 1.5rem; letter-spacing: .02em; text-align: center; }
+.bbq-smoker-emblem small { display: block; margin-top: -4px; font-family: var(--font-body); font-size: .53rem; font-weight: 600; }
+.bbq-smoker-gauge { position: absolute; top: 30px; left: 25%; width: 23px; height: 23px; border: 3px solid #9B8A78; border-radius: 50%; background: #EFE8DD; }
+.bbq-smoker-gauge::after { content: ""; position: absolute; top: 7px; left: 7px; width: 7px; height: 2px; background: #9E341E; transform: rotate(-55deg); transform-origin: left center; }
+.bbq-smoker-handle { position: absolute; bottom: 19px; left: 34%; width: 32%; height: 9px; border-radius: 4px; background: linear-gradient(#BA9675, #7E5435); box-shadow: 0 3px 0 3px #211810; }
+.bbq-smoker-base { position: absolute; z-index: 2; top: 202px; left: 5%; right: 5%; height: 28px; display: grid; place-items: center; border-radius: 0 0 16px 16px; background: linear-gradient(#483022, #2D211A); color: #D9C6B4; border-top: 2px solid #765843; }
+.bbq-smoker-base > span { font-size: .53rem; letter-spacing: .1em; text-transform: uppercase; }
+.bbq-smoker-leg { position: absolute; z-index: 1; top: 223px; height: 44px; width: 9px; background: #3B2316; border-radius: 2px; }
+.bbq-smoker-leg-left { left: 21%; transform: rotate(13deg); }
+.bbq-smoker-leg-right { right: 21%; transform: rotate(-13deg); }
+.bbq-smoke { position: absolute; z-index: 4; inset: 20px 12% 70px; pointer-events: none; overflow: visible; }
+.bbq-smoke i { position: absolute; bottom: 0; left: 30%; width: 65px; height: 75px; border-radius: 50%; background: radial-gradient(ellipse, #FFFDF9B0, transparent 70%); filter: blur(8px); opacity: 0; }
+.bbq-smoke i:nth-child(2) { left: 48%; }
+.bbq-smoke i:nth-child(3) { left: 64%; }
+.bbq-smoker-story[data-open="true"] .bbq-smoker-lid { transform: translateY(-10px) rotateX(105deg); filter: brightness(.8); }
+.bbq-smoker-story[data-open="true"] .bbq-smoke i { animation: bbq-smoke-reveal 2.2s ease-out both; }
+.bbq-smoker-story[data-open="true"] .bbq-smoke i:nth-child(2) { animation-delay: .22s; }
+.bbq-smoker-story[data-open="true"] .bbq-smoke i:nth-child(3) { animation-delay: .4s; }
+.bbq-smoker-controls { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; border-top: 1px solid var(--line); padding-top: 16px; }
+.bbq-smoker-controls p { margin: 0; font-size: .74rem; font-weight: 700; }
+.bbq-smoker-controls button { min-height: 44px; padding: 9px 13px; border: 1px solid var(--accent); border-radius: 9px; background: #FFFDF9; color: var(--accent); font-size: .7rem; font-weight: 800; cursor: pointer; }
+.bbq-smoker-controls button:hover { background: var(--accent); color: #FFFDF9; }
+.bbq-smoker-note { min-height: 2.8em; margin: 12px 0 0; color: var(--muted); font-size: .67rem; line-height: 1.5; }
+.bbq-hero-banquet { margin: 0; padding: 18px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .74rem; text-align: center; }
+.bbq-hero-banquet a { display: inline-block; margin-left: 5px; color: var(--text); text-underline-offset: 4px; }
+@keyframes bbq-smoke-reveal { 0% { opacity: 0; transform: translateY(0) scale(.6); } 20% { opacity: .8; } 100% { opacity: 0; transform: translateY(-135px) scale(2.1); } }
+@media (max-width: 900px) {
+  .bbq-hero-grid { gap: 24px; }
+  .header-inner .nav { gap: 14px; font-size: .76rem; }
+}
+@media (max-width: 760px) {
+  .bbq-hero-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .bbq-hero-copy { text-align: center; }
+  .bbq-hero-kicker, .bbq-hero-actions, .bbq-hero-facts { justify-content: center; }
+  .bbq-hero h1 { font-size: clamp(2.75rem, 9vw, 4rem); }
+  .bbq-hero-description { margin-inline: auto; }
+  .bbq-hero-brand { margin-bottom: 26px; }
+  .bbq-smoker-story { width: min(100%, 480px); margin-inline: auto; }
+  .bbq-hero-brand img { width: 96px; height: 96px; }
+}
+@media (max-width: 400px) {
+  .bbq-hero > .container { width: calc(100% - 32px); }
+  .bbq-hero h1 { font-size: 2.65rem; }
+  .bbq-hero-kicker { font-size: .58rem; }
+  .bbq-smoker-story { padding: 18px 14px; }
+  .bbq-hero-facts > span { font-size: .55rem; }
+  .header-order { padding-inline: 10px; font-size: .73rem; }
+  .brand { font-size: 1.2rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+.bbq-hero h1 > span { background: linear-gradient(#9E341E1A, #9E341E1A) no-repeat left bottom / 0% .13em; transition: background-size 1s ease .3s; }
+.bbq-hero-grid:has(.bbq-smoker-story[data-open="true"]) h1 > span { background-size: 100% .13em; }
