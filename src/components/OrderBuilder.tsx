@@ -29,7 +29,7 @@ export function OrderBuilder() {
   const sauce = activeSauces.find((item) => item.id === sauceId);
   const zone = activeZones.find((item) => item.id === zoneId);
   const totals = useMemo(() => {
-    const meat = shop.portion.priceRubles * quantity;
+    const meat = (shop.portions[0]?.priceRubles ?? 0) * quantity;
     const sauceTotal = (sauce?.pricePerPortionRubles ?? 0) * quantity;
     const delivery = zone?.feeRubles ?? 0;
     return { meat, sauce: sauceTotal, delivery, total: meat + sauceTotal + delivery };
