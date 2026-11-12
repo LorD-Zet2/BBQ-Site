@@ -8,7 +8,7 @@ import styles from "./OrderBuilder.module.css";
 type PreparedOrder = { messageText: string; messengerUrl: string; reference: string };
 
 const rubles = (value: number) => new Intl.NumberFormat("ru-RU").format(value) + " ₽";
-const configuredRubles = (value: number) => value === 0 && !shop.orderingOpen ? "настройте цену" : rubles(value);
+const configuredRubles = (value: number) => (value === 0 && !shop.orderingOpen ? "настройте цену" : rubles(value));
 
 export function OrderBuilder() {
   const activePortion = shop.portions.find((item) => item.active) ?? shop.portions[0];
