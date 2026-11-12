@@ -29,7 +29,7 @@ export function OrderBuilder() {
   const sauce = activeSauces.find((item) => item.id === sauceId);
   const zone = activeZones.find((item) => item.id === zoneId);
   const totals = useMemo(() => {
-    const meat = shop.portion.priceRubles * quantity;
+    const meat = (shop.portions.at(0)?.priceRubles ?? 0);
     const sauceTotal = (sauce?.pricePerPortionRubles ?? 0) * quantity;
     const delivery = zone?.feeRubles ?? 0;
     return { meat, sauce: sauceTotal, delivery, total: meat + sauceTotal + delivery };
@@ -86,16 +86,16 @@ export function OrderBuilder() {
         <form className={styles.form} onSubmit={(event) => { event.preventDefault(); prepareAndOpen(); }} noValidate>
           <fieldset className={styles.group}>
             <legend className={styles.legend}>Порция</legend>
-            <div className={styles.segments}><div className={styles.radio}><input id="portion-300" type="radio" checked readOnly /><label htmlFor="portion-300">300 г · {configuredRubles(shop.portion.priceRubles)}</label></div></div>
+            <div className={styles.segments}><div className={styles.radio}><input id="portion-300" type="radio" checked readOnly /><label htmlFor="portion-300">300 г · {configuredRubles(shop.portions.at(0)?.priceRubles ?? 0)}</label></div></div>
           </fieldset>
 
           <fieldset className={styles.group}>
             <legend className={styles.legend}>Количество порций</legend>
-            <p className={styles.hint}>От 1 до {shop.portion.maxQuantity}</p>
+            <p className={styles.hint}>От 1 до {(shop.portions.at(0)?.maxQuantity ?? 10)}</p>
             <div className={styles.stepper}>
               <button type="button" aria-label="Уменьшить количество" onClick={() => setQuantity((value) => Math.max(1, value - 1))}>−</button>
-              <input aria-label="Количество порций" inputMode="numeric" min={1} max={shop.portion.maxQuantity} value={quantity} onChange={(event) => { const value = Number(event.target.value); if (Number.isInteger(value)) setQuantity(Math.min(shop.portion.maxQuantity, Math.max(1, value))); }} />
-              <button type="button" aria-label="Увеличить количество" onClick={() => setQuantity((value) => Math.min(shop.portion.maxQuantity, value + 1))}>+</button>
+              <input aria-label="Количество порций" inputMode="numeric" min={1} max={(shop.portions.at(0)?.maxQuantity ?? 10)} value={quantity} onChange={(event) => { const value = Number(event.target.value); if (Number.isInteger(value)) setQuantity(Math.min(shop.portion.maxQuantity, Math.max(1, value))); }} />
+              <button type="button" aria-label="Увеличить количество" onClick={() => setQuantity((value) => Math.min(shop.portions.at(0)?.maxQuantity ?? 10), value + 1))}>+</button>
             </div>
           </fieldset>
 
