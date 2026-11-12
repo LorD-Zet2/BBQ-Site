@@ -1,79 +1,158 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { shop } from "@/config/shop";
+import styles from "./Hero.module.css";
+
+const clamp = (value: number) => Math.max(0, Math.min(1, value));
+const ease = (value: number) => 1 - Math.pow(1 - clamp(value), 3);
 
 export function Hero() {
-  const [opened, setOpened] = useState(false);
-  const [ready, setReady] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [replay, setReplay] = useState(0);
 
   useEffect(() => {
-    if (ready) return;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion) {
-      setOpened(true);
-      setReady(true);
-      return;
+    const root = rootRef.current;
+    const header = headerRef.current;
+    const track = trackRef.current;
+    const viewport = viewportRef.current;
+    if (!root || !header || !track || !viewport) return;
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let active = true;
+    let frame = 0;
+    let startedAt: number | null = null;
+    let ready = false;
+    let headerHeight = 0;
+    const imageCleanups: Array<() => void> = [];
+
+    function measure() {
+      if (!root || !header) return;
+      headerHeight = header.getBoundingClientRect().height;
+      root.style.setProperty("--smoker-header-height", `${headerHeight}px`);
+      schedule();
     }
-    const timer = window.setTimeout(() => { setOpened(true); setReady(true); }, 1100);
-    return () => window.clearTimeout(timer);
-  }, [ready]);
+
+    function draw(now: number) {
+      frame = 0;
+      if (!active || !root || !track || !viewport) return;
+      const reduced = media.matches;
+      const compact = window.innerHeight < 540;
+      root.dataset.motion = reduced || compact ? "off" : "on";
+      if (reduced || compact) {
+        root.style.setProperty("--opening", "1");
+        root.style.setProperty("--lid-angle", "-100deg");
+        root.style.setProperty("--reveal", "1");
+        root.style.setProperty("--lid-label", "0");
+        if (contentRef.current) contentRef.current.inert = false;
+        return;
+      }
+      if (ready && startedAt === null) startedAt = now;
+      const entry = startedAt === null ? 0 : ease((now - startedAt - 220) / 1450);
+      const travel = Math.max(1, track.offsetHeight - viewport.offsetHeight);
+      const scrolled = clamp((headerHeight - track.getBoundingClientRect().top) / travel);
+      // Keep the slogan open briefly, then close completely before the hero leaves.
+      const closing = ease((scrolled - 0.08) / 0.78);
+      const opening = entry * (1 - closing);
+      root.style.setProperty("--opening", opening.toFixed(4));
+      root.style.setProperty("--lid-angle", `${(-100 * opening).toFixed(2)}deg`);
+      root.style.setProperty("--reveal", clamp((opening - 0.2) / 0.55).toFixed(4));
+      root.style.setProperty("--lid-label", clamp(1 - opening * 4).toFixed(4));
+      if (contentRef.current) contentRef.current.inert = opening < 0.45;
+      if (ready && entry < 1) schedule();
+    }
+
+    function schedule() {
+      if (active && !frame) frame = window.requestAnimationFrame(draw);
+    }
+
+    const images = Array.from(root.querySelectorAll<HTMLImageElement>("[data-smoker-image]"));
+    const loaded = images.map((image) => image.complete ? Promise.resolve() : new Promise<void>((resolve) => {
+      const finish = () => { remove(); resolve(); };
+      const remove = () => {
+        image.removeEventListener("load", finish);
+        image.removeEventListener("error", finish);
+      };
+      image.addEventListener("load", finish);
+      image.addEventListener("error", finish);
+      imageCleanups.push(remove);
+    }));
+    void Promise.all(loaded).then(() => {
+      if (!active) return;
+      ready = true;
+      schedule();
+    });
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(header);
+    observer.observe(track);
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", measure);
+    window.addEventListener("pageshow", schedule);
+    media.addEventListener("change", schedule);
+    measure();
+    return () => {
+      active = false;
+      window.cancelAnimationFrame(frame);
+      observer.disconnect();
+      imageCleanups.forEach((remove) => remove());
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("pageshow", schedule);
+      media.removeEventListener("change", schedule);
+      if (contentRef.current) contentRef.current.inert = false;
+    };
+  }, [replay]);
 
   return (
-    <div id="top">
-      {!shop.orderingOpen && <div className="demo-strip">Знакомьтесь с меню · Приём онлайн-заказов скоро откроется</div>}
-      <header className="site-header">
-        <div className="container header-inner">
-          <a className="brand" href="#top" aria-label="BBQ in MHK — на главную">BBQ <span>in MHK</span></a>
-          <nav className="nav" aria-label="Навигация">
+    <div id="top" ref={rootRef} className={styles.root}
+      style={{ "--smoker-header-height": shop.orderingOpen ? "74px" : "110px" } as CSSProperties}>
+      <div ref={headerRef} className={styles.headerWrap}>
+        {!shop.orderingOpen && <div className={styles.preview}>Знакомьтесь с меню · Приём онлайн-заказов скоро откроется</div>}
+        <header className={styles.header}>
+          <a className={styles.brand} href="#top" aria-label="BBQ in MHK — на главную">
+            <img src="/images/logo.PNG" alt="" width={48} height={48} /><span>BBQ <small>in MHK</small></span>
+          </a>
+          <nav className={styles.nav} aria-label="Навигация">
             <a href="#cat-main">Меню</a><a href="#about-bbq">О настоящем BBQ</a><a href="#ribs">Собрать заказ</a>
           </nav>
-          <a className="header-order" href="#ribs">{shop.orderingOpen ? "Заказать →" : "Выбрать рёбра →"}</a>
-        </div>
-      </header>
-      <section className="bbq-hero" aria-labelledby="hero-title">
-        <div className="container">
-          <div className="bbq-hero-brand">
-            <img src="/images/logo.PNG" alt="BBQ in MHK" width={112} height={112} fetchPriority="high" />
-            <p>Махачкала <span aria-hidden="true">·</span> Настоящее техасское BBQ</p>
-          </div>
-          <div className="bbq-hero-grid">
-            <div className="bbq-hero-copy">
-              <p className="bbq-hero-kicker"><span aria-hidden="true" /> Хорошие вещи требуют времени</p>
-              <h1 id="hero-title">Вкус —<br />который<br /><span>стоит ждать.</span></h1>
-              <p className="bbq-hero-description">Говяжьи рёбра кальби. 7–8 часов томления в живом дыму — ради тёмного барка, дымного кольца и сочности в каждом кусочке.</p>
-              <div className="bbq-hero-actions">
-                <a className="cta" href="#cat-main">Посмотреть меню <span aria-hidden="true">↗</span></a>
-                <a className="bbq-hero-textlink" href="#ribs">Собрать свой BBQ →</a>
-              </div>
-              <div className="bbq-hero-facts"><span>100% Халяль</span><span>7–8 часов дыма</span><span>Доставка по Махачкале</span></div>
-            </div>
-            <div className="bbq-smoker-story" data-open={opened} data-ready={ready}>
-              <div className="bbq-smoker-caption"><span>LOW & SLOW</span><span>Без спешки. Со вкусом.</span></div>
-              <div className="bbq-smoker-scene" aria-hidden="true">
-                <div className="bbq-smoke"><i /><i /><i /></div>
-                <div className="bbq-smoker-chimney" />
-                <div className="bbq-smoker-chamber">
-                  <img src="/images/kalbi-hero-demo.webp" alt="" width={640} height={480} />
-                  <span className="bbq-smoker-food-label">7–8 часов спустя</span>
-                </div>
-                <div className="bbq-smoker-lid"><span className="bbq-smoker-gauge" /><span className="bbq-smoker-emblem">BBQ <small>in MHK</small></span><span className="bbq-smoker-handle" /></div>
-                <div className="bbq-smoker-base"><span>Огонь. Дым. Терпение.</span></div>
-                <div className="bbq-smoker-leg bbq-smoker-leg-left" /><div className="bbq-smoker-leg bbq-smoker-leg-right" />
-              </div>
-              <div className="bbq-smoker-controls">
-                <p aria-live="polite">{opened ? "Вот ради чего мы ждали." : "Всё самое вкусное — под крышкой."}</p>
-                <button type="button" aria-expanded={opened} aria-controls="bbq-smoker-note"
-                  onClick={() => { setReady(true); setOpened((current) => !current); }}>
-                  {opened ? "Закрыть смокер ↻" : "Открыть смокер ↗"}
-                </button>
-              </div>
-              <p id="bbq-smoker-note" className="bbq-smoker-note">{opened ? "Тёмная корочка. Дымное кольцо. Настоящее BBQ." : "Настоящее BBQ готовится часами. Здесь можно заглянуть внутрь."}</p>
+          <a href="#ribs" className={styles.headerCta}>{shop.orderingOpen ? "Заказать →" : "Выбрать рёбра →"}</a>
+        </header>
+      </div>
+      <section ref={trackRef} className={styles.track} aria-labelledby="hero-title">
+        <div ref={viewportRef} className={styles.viewport}>
+          <img className={styles.interior} src="/images/smoker-interior-v3.webp" alt=""
+            width={1672} height={941} fetchPriority="high" data-smoker-image="interior" />
+          <div className={styles.shade} aria-hidden="true" />
+          <div className={styles.emberGlow} aria-hidden="true" />
+          <div className={styles.smoke} aria-hidden="true"><i /><i /></div>
+          <div ref={contentRef} className={styles.content}>
+            <p className={styles.eyebrow}>Махачкала · 100% Халяль · Настоящее BBQ</p>
+            <h1 id="hero-title" className={styles.slogan}>
+              <span>Вкус —</span><span>который</span><span className={styles.sloganLast}>стоит ждать.</span>
+            </h1>
+            <p className={styles.description}>Говяжьи рёбра кальби.<br />7–8 часов в живом дыму — ради этого момента.</p>
+            <div className={styles.actions}>
+              <a href="#cat-main" className={styles.primary}>Посмотреть меню ↗</a>
+              <a href="#ribs" className={styles.secondary}>Собрать свой BBQ →</a>
             </div>
           </div>
-          <p className="bbq-hero-banquet">Большой повод? <a href="#contacts">Банкеты и свадьбы · партии 50–60 кг →</a></p>
+          <div className={styles.lid} aria-hidden="true">
+            <img src="/images/smoker-lid-v3.webp" alt="" width={1672} height={941}
+              fetchPriority="high" data-smoker-image="lid" />
+            <div className={styles.lidBrand}><span>BBQ <small>in MHK</small></span><p>Хорошие вещи требуют времени.</p></div>
+          </div>
+          <div className={styles.caption}>
+            <span>Листайте вниз — смокер закроется <span aria-hidden="true">↓</span></span>
+            <button type="button" onClick={() => setReplay((current) => current + 1)}>Открыть ещё раз ↗</button>
+          </div>
         </div>
       </section>
+      <div className={styles.afterword}><span>Дымное кольцо. Тёмный барк. Настоящее BBQ.</span><a href="#contacts">Банкеты и свадьбы · партии 50–60 кг →</a></div>
     </div>
   );
 }
