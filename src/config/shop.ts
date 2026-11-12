@@ -4,7 +4,7 @@ const idSchema = z.string().min(1).max(48).regex(/^[a-z0-9_-]+$/i);
 
 const shopSchema = z.object({
   brandName: z.string().min(1).max(80),
-  city: z.literal("Махачкала"),
+  city: z.literal("РњР°С…Р°С‡РєР°Р»Р°"),
   timezone: z.literal("Europe/Moscow"),
   orderingOpen: z.boolean(),
   legalContentReady: z.boolean(),
@@ -38,28 +38,28 @@ const shopSchema = z.object({
   weightDisclosure: z.string().min(1).max(240),
 }).strict().superRefine((config, ctx) => {
   const allIds = [...config.portions, ...config.sauces, ...config.deliveryZones, ...config.timeSlots].map((item) => item.id);
-  if (new Set(allIds).size !== allIds.length) ctx.addIssue({ code: "custom", message: "Все ID должны быть уникальными" });
+  if (new Set(allIds).size !== allIds.length) ctx.addIssue({ code: "custom", message: "Р’СЃРµ ID РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ СѓРЅРёРєР°Р»СЊРЅС‹РјРё" });
   if (config.orderingOpen) {
-    if (!config.legalContentReady) ctx.addIssue({ code: "custom", path: ["legalContentReady"], message: "Сначала заполните юридические сведения" });
-    if (config.whatsappDigits === "70000000000") ctx.addIssue({ code: "custom", path: ["whatsappDigits"], message: "Замените тестовый WhatsApp" });
-    if (config.telegramUsername === "replace_me") ctx.addIssue({ code: "custom", path: ["telegramUsername"], message: "Замените тестовый Telegram" });
-    if (!config.portions.some((portion) => portion.active)) ctx.addIssue({ code: "custom", path: ["portions"], message: "Включите хотя бы одну порцию" });
-    if (config.deliveryZones.some((zone) => zone.id === "setup-zone")) ctx.addIssue({ code: "custom", path: ["deliveryZones"], message: "Замените тестовую зону" });
-    if (!config.deliveryZones.some((zone) => zone.active)) ctx.addIssue({ code: "custom", path: ["deliveryZones"], message: "Включите хотя бы одну зону" });
-    if (!config.timeSlots.some((slot) => slot.active)) ctx.addIssue({ code: "custom", path: ["timeSlots"], message: "Включите хотя бы один вариант времени" });
+    if (!config.legalContentReady) ctx.addIssue({ code: "custom", path: ["legalContentReady"], message: "РЎРЅР°С‡Р°Р»Р° Р·Р°РїРѕР»РЅРёС‚Рµ СЋСЂРёРґРёС‡РµСЃРєРёРµ СЃРІРµРґРµРЅРёСЏ" });
+    if (config.whatsappDigits === "70000000000") ctx.addIssue({ code: "custom", path: ["whatsappDigits"], message: "Р—Р°РјРµРЅРёС‚Рµ С‚РµСЃС‚РѕРІС‹Р№ WhatsApp" });
+    if (config.telegramUsername === "replace_me") ctx.addIssue({ code: "custom", path: ["telegramUsername"], message: "Р—Р°РјРµРЅРёС‚Рµ С‚РµСЃС‚РѕРІС‹Р№ Telegram" });
+    if (!config.portions.some((portion) => portion.active)) ctx.addIssue({ code: "custom", path: ["portions"], message: "Р’РєР»СЋС‡РёС‚Рµ С…РѕС‚СЏ Р±С‹ РѕРґРЅСѓ РїРѕСЂС†РёСЋ" });
+    if (config.deliveryZones.some((zone) => zone.id === "setup-zone")) ctx.addIssue({ code: "custom", path: ["deliveryZones"], message: "Р—Р°РјРµРЅРёС‚Рµ С‚РµСЃС‚РѕРІСѓСЋ Р·РѕРЅСѓ" });
+    if (!config.deliveryZones.some((zone) => zone.active)) ctx.addIssue({ code: "custom", path: ["deliveryZones"], message: "Р’РєР»СЋС‡РёС‚Рµ С…РѕС‚СЏ Р±С‹ РѕРґРЅСѓ Р·РѕРЅСѓ" });
+    if (!config.timeSlots.some((slot) => slot.active)) ctx.addIssue({ code: "custom", path: ["timeSlots"], message: "Р’РєР»СЋС‡РёС‚Рµ С…РѕС‚СЏ Р±С‹ РѕРґРёРЅ РІР°СЂРёР°РЅС‚ РІСЂРµРјРµРЅРё" });
   }
 });
 
 /*
- * ЕДИНСТВЕННЫЙ БЛОК НАСТРОЕК ВЛАДЕЛЬЦА.
- * 1. Замените цену, контакты, зоны и время.
- * 2. Заполните политику данных и поставьте legalContentReady: true.
- * 3. Последним действием переключите orderingOpen: true.
- * Деньги указываются целыми рублями. Номер WhatsApp — только цифры, Telegram — без @.
+ * Р•Р”РРќРЎРўР’Р•РќРќР«Р™ Р‘Р›РћРљ РќРђРЎРўР РћР•Рљ Р’Р›РђР”Р•Р›Р¬Р¦Рђ.
+ * 1. Р—Р°РјРµРЅРёС‚Рµ С†РµРЅСѓ, РєРѕРЅС‚Р°РєС‚С‹, Р·РѕРЅС‹ Рё РІСЂРµРјСЏ.
+ * 2. Р—Р°РїРѕР»РЅРёС‚Рµ РїРѕР»РёС‚РёРєСѓ РґР°РЅРЅС‹С… Рё РїРѕСЃС‚Р°РІСЊС‚Рµ legalContentReady: true.
+ * 3. РџРѕСЃР»РµРґРЅРёРј РґРµР№СЃС‚РІРёРµРј РїРµСЂРµРєР»СЋС‡РёС‚Рµ orderingOpen: true.
+ * Р”РµРЅСЊРіРё СѓРєР°Р·С‹РІР°СЋС‚СЃСЏ С†РµР»С‹РјРё СЂСѓР±Р»СЏРјРё. РќРѕРјРµСЂ WhatsApp вЂ” С‚РѕР»СЊРєРѕ С†РёС„СЂС‹, Telegram вЂ” Р±РµР· @.
  */
 export const shop = shopSchema.parse({
-  brandName: "BBQ / Махачкала",
-  city: "Махачкала",
+  brandName: "BBQ / РњР°С…Р°С‡РєР°Р»Р°",
+  city: "РњР°С…Р°С‡РєР°Р»Р°",
   timezone: "Europe/Moscow",
 
   orderingOpen: false,
@@ -76,19 +76,19 @@ export const shop = shopSchema.parse({
   sauces: [
     {
       id: "none",
-      title: "Без дополнительного соуса",
-      portionLabel: "Без доплаты",
+      title: "Р‘РµР· РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕРіРѕ СЃРѕСѓСЃР°",
+      portionLabel: "Р‘РµР· РґРѕРїР»Р°С‚С‹",
       pricePerPortionRubles: 0,
       active: true,
     },
-    // Добавляйте подтверждённые соусы по этому образцу:
-    // { id: "my-sauce", title: "Название", portionLabel: "50 мл", pricePerPortionRubles: 100, active: true },
+    // Р”РѕР±Р°РІР»СЏР№С‚Рµ РїРѕРґС‚РІРµСЂР¶РґС‘РЅРЅС‹Рµ СЃРѕСѓСЃС‹ РїРѕ СЌС‚РѕРјСѓ РѕР±СЂР°Р·С†Сѓ:
+    // { id: "my-sauce", title: "РќР°Р·РІР°РЅРёРµ", portionLabel: "50 РјР»", pricePerPortionRubles: 100, active: true },
   ],
 
   deliveryZones: [
     {
       id: "setup-zone",
-      title: "Замените на вашу зону доставки",
+      title: "Р—Р°РјРµРЅРёС‚Рµ РЅР° РІР°С€Сѓ Р·РѕРЅСѓ РґРѕСЃС‚Р°РІРєРё",
       feeRubles: 0,
       active: true,
     },
@@ -97,12 +97,12 @@ export const shop = shopSchema.parse({
   timeSlots: [
     {
       id: "agree-time",
-      title: "Согласовать время с оператором",
+      title: "РЎРѕРіР»Р°СЃРѕРІР°С‚СЊ РІСЂРµРјСЏ СЃ РѕРїРµСЂР°С‚РѕСЂРѕРј",
       active: true,
     },
   ],
 
-  weightDisclosure: "Вес указан для готового продукта с костями. Доступны порции 300 г и 600 г.",
+  weightDisclosure: "Р’РµСЃ СѓРєР°Р·Р°РЅ РґР»СЏ РіРѕС‚РѕРІРѕРіРѕ РїСЂРѕРґСѓРєС‚Р° СЃ РєРѕСЃС‚СЏРјРё. Р”РѕСЃС‚СѓРїРЅС‹ РїРѕСЂС†РёРё 300 Рі Рё 600 Рі.",
 });
 
 export type ShopConfig = z.infer<typeof shopSchema>;
