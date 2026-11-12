@@ -1,32 +1,64 @@
-import Image from "next/image";
 import { shop } from "@/config/shop";
 
 export function Hero() {
   return (
-    <>
-      <div className="demo-strip" role="status">{shop.orderingOpen ? "Приём заказов открыт. Наличие и время подтверждает оператор." : "Стоп-лист: приём заказов временно закрыт. Настройки находятся в src/config/shop.ts."}</div>
+    <div id="top">
+      {!shop.orderingOpen && (
+        <div className="demo-strip">
+          Режим предпросмотра меню · Приём онлайн-заказов скоро откроется
+        </div>
+      )}
+
       <header className="site-header">
         <div className="container header-inner">
-          <a className="brand" href="#top" aria-label={`${shop.brandName} — наверх`}><span>{shop.brandName}</span></a>
-          <nav className="nav" aria-label="Основная навигация">
-            <a href="#ribs">Рёбра</a><a href="#process">Как готовим</a><a href="#delivery">Доставка</a><a href="#contacts">Контакты</a>
+          <a className="brand" href="#top">
+            <img src="/logo.png" alt="BBQ in MHK логотип" width={58} height={58} />
+            <div>
+              BBQ <span>in MHK</span>
+            </div>
+          </a>
+
+          <nav className="nav" aria-label="Навигация">
+            <a href="#cat-main">Меню</a>
+            <a href="#ribs">Конструктор</a>
+            <a href="#process">Как готовим</a>
+            <a href="#delivery">Доставка</a>
           </nav>
+
+          <a className="cta" href="#ribs" style={{ minHeight: "44px", padding: "0 18px", fontSize: ".9rem" }}>
+            Заказать
+          </a>
         </div>
       </header>
-      <section className="hero" id="top" aria-labelledby="hero-title">
-        <div className="hero-media">
-          <Image src="/images/kalbi-hero-demo.webp" alt="Демонстрационная визуализация копчёных говяжьих рёбер кальби" fill priority sizes="100vw" />
-        </div>
-        <div className="container">
-          <div className="hero-content">
-            <p className="eyebrow">Махачкала · предзаказ партиями</p>
-            <h1 id="hero-title">Говяжьи рёбра кальби</h1>
-            <p className="hero-copy">Сухой маринад из соли, чёрного перца и паприки. Медленное копчение в пеллетном смокере занимает 6–8 часов.</p>
-            <a className="cta" href="#ribs">Собрать заказ <span aria-hidden="true">↓</span></a>
-            <small className="hero-note">Изображение создано для демонстрации дизайна и не является фотографией блюда продавца.</small>
+
+      <section className="hero" aria-labelledby="hero-title">
+        <div className="container hero-grid">
+          <div>
+            <p className="eyebrow">100% Халяль · Махачкала · Пеллетный смокер</p>
+            <h1 id="hero-title">
+              Настоящее <span>BBQ</span> в Махачкале
+            </h1>
+            <p className="hero-copy">
+              Говяжьи рёбра кальби медленного копчения 6–8 часов в сухом маринаде из соли, чёрного перца и паприки. Сочное мясо, авторские соусы и доставка по городу.
+            </p>
+            <div className="hero-actions">
+              <a className="cta" href="#cat-main">
+                Смотреть меню
+              </a>
+              <a className="cta cta-outline" href="#ribs">
+                Собрать заказ
+              </a>
+            </div>
+            <span className="hero-note">
+              Готовим партиями · Банкетные заказы от 5 до 60 кг по предзаказу
+            </span>
+          </div>
+
+          <div className="hero-logo-card">
+            <img src="/logo.PNG" alt="Фирменный знак BBQ in MHK" width={360} height={360} />
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
