@@ -2,6 +2,7 @@ import { shop } from "@/config/shop";
 import { Hero } from "@/components/Hero";
 import { MenuCatalog } from "@/components/MenuCatalog";
 import { OrderBuilder } from "@/components/OrderBuilder";
+import { AboutBbqAndInsta } from "@/components/AboutBbqAndInsta";
 
 export default function Home() {
   return (
@@ -10,22 +11,24 @@ export default function Home() {
       <main id="main">
         <MenuCatalog />
         <OrderBuilder />
+        <AboutBbqAndInsta />
+
         <section className="section process" id="process" aria-labelledby="process-title">
           <div className="container">
-            <p className="section-kicker">Как готовим</p>
-            <h2 className="section-title" id="process-title">Медленно. Партиями. Без спешки.</h2>
+            <p className="section-kicker">Наши стандарты</p>
+            <h2 className="section-title" id="process-title">Честный подход к каждой партии</h2>
             <div className="steps">
               <div className="step">
-                <h3>Говяжьи рёбра</h3>
-                <p>Отборная халяльная говядина с проверкой качества каждой партии.</p>
+                <h3>Отборная халяльная говядина</h3>
+                <p>100% Халяль с проверкой свежести и калибра мяса в каждой партии.</p>
               </div>
               <div className="step">
-                <h3>Сухой маринад</h3>
-                <p>Честная классика: соль, дроблёный чёрный перец и ароматная паприка.</p>
+                <h3>Живой дым и жар</h3>
+                <p>Томление без спешки на натуральной древесине для глубокого аромата.</p>
               </div>
               <div className="step">
-                <h3>Смокер 6–8 часов</h3>
-                <p>Томление на натуральных древесных пеллетах до идеальной мягкости.</p>
+                <h3>7–8 часов в коптильне</h3>
+                <p>Контроль температуры на каждом этапе до идеальной мягкости.</p>
               </div>
               <div className="step">
                 <h3>Горячая выдача</h3>
@@ -93,7 +96,7 @@ export default function Home() {
         <div className="container footer-grid">
           <div>
             <a className="brand" href="#top">
-              <img src="/logo.png" alt="BBQ in MHK" width={48} height={48} />
+              <img src="/images/logo.PNG" alt="BBQ in MHK" width={48} height={48} />
               <div>
                 BBQ <span>in MHK</span>
               </div>
@@ -105,6 +108,7 @@ export default function Home() {
           <div className="footer-links">
             <a href="#cat-main">Меню</a>
             <a href="#ribs">Конструктор</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram @bbq.mhk</a>
             <a href="/privacy">Политика данных</a>
           </div>
         </div>
