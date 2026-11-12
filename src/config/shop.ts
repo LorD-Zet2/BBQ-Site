@@ -3,7 +3,7 @@ import { z } from "zod";
 const idSchema = z.string().min(1).max(48).regex(/^[a-z0-9_-]+$/i);
 
 const shopSchema = z.object({
-  BBQ in MHK: z.string().min(1).max(80),
+  brandName: z.string().min(1).max(80),
   city: z.literal("Махачкала"),
   timezone: z.literal("Europe/Moscow"),
   orderingOpen: z.boolean(),
@@ -58,7 +58,7 @@ const shopSchema = z.object({
  * Деньги указываются целыми рублями. Номер WhatsApp — только цифры, Telegram — без @.
  */
 export const shop = shopSchema.parse({
-  brandName: "BBQ / Махачкала",
+  brandName: "BBQ in MHK",
   city: "Махачкала",
   timezone: "Europe/Moscow",
 
