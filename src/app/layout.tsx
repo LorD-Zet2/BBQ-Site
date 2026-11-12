@@ -3,8 +3,8 @@ import { shop } from "@/config/shop";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: `${shop.brandName} — Говяжьи рёбра кальби из смокера в Махачкале`,
-  description: "Настоящее техасское BBQ 100% Халяль в Махачкале. Говяжьи рёбра кальби 6–8 часов томления на пеллетах, фирменные соусы и гарниры с доставкой.",
+  title: `${shop.brandName} — Настоящее BBQ в Махачкале`,
+  description: "Говяжьи рёбра кальби медленного копчения 7–8 часов в Махачкале. 100% Халяль.",
   robots: { index: shop.orderingOpen, follow: shop.orderingOpen },
 };
 
@@ -21,11 +21,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="preconnect" href="https://googleapis.com" />
         <link rel="preconnect" href="https://gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Roboto+Slab:wght@700;800;900&display=swap"
+          href="https://googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@600;700&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body style={{ ["--font-display" as string]: "'Roboto Slab', Georgia, serif", ["--font-sans" as string]: "'Manrope', sans-serif" }}>
+      <body>
         <a className="skip-link" href="#main">К основному содержимому</a>
         {children}
       </body>
