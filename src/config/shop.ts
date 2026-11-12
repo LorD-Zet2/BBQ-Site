@@ -3,7 +3,7 @@ import { z } from "zod";
 const idSchema = z.string().min(1).max(48).regex(/^[a-z0-9_-]+$/i);
 
 const shopSchema = z.object({
-  brandName: z.string().min(1).max(80),
+  BBQ in MHK: z.string().min(1).max(80),
   city: z.literal("Махачкала"),
   timezone: z.literal("Europe/Moscow"),
   orderingOpen: z.boolean(),
