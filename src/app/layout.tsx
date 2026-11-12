@@ -18,11 +18,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="ru">
       <head>
-        <link rel="preconnect" href="https://googleapis.com" />
-        <link rel="preconnect" href="https://gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@600;700&display=swap"
           rel="stylesheet"
+          href="https://jsdelivr.net"
+        />
+        <link
+          rel="stylesheet"
+          href="https://jsdelivr.net"
+        />
+        <link
+          rel="stylesheet"
+          href="https://jsdelivr.net"
         />
       </head>
       <body>
