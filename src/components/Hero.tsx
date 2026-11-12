@@ -29,7 +29,7 @@ export function Hero() {
       <section className="hero" aria-labelledby="hero-title">
         <div className="container hero-center">
           <div className="hero-logo-wrap">
-            <img src="/logo.png" alt="BBQ in MHK" width={220} height={220} />
+            <img src="/images/logo.PNG" alt="BBQ in MHK" width={220} height={220} />
           </div>
 
           <p className="eyebrow">100% Халяль · Махачкала · Пеллетный смокер</p>
