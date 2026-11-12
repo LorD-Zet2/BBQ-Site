@@ -11,7 +11,7 @@ const rubles = (value: number) => new Intl.NumberFormat("ru-RU").format(value) +
 const configuredRubles = (value: number) => (value === 0 && !shop.orderingOpen ? "настройте цену" : rubles(value));
 
 export function OrderBuilder() {
-  const activePortion = shop.portions.find((item) => item.active) ?? shop.portions[0];
+  const activePortion = shop.portions.find((item) => item.active) ?? shop.portions.at(0);
   const activeSauces = shop.sauces.filter((item) => item.active);
   const activeZones = shop.deliveryZones.filter((item) => item.active);
   const activeSlots = shop.timeSlots.filter((item) => item.active);
@@ -21,9 +21,9 @@ export function OrderBuilder() {
   const portionWeight = activePortion?.weightGrams ?? 300;
 
   const [quantity, setQuantity] = useState(1);
-  const [sauceId, setSauceId] = useState(activeSauces[0]?.id ?? "");
-  const [zoneId, setZoneId] = useState(activeZones[0]?.id ?? "");
-  const [timeSlotId, setTimeSlotId] = useState(activeSlots[0]?.id ?? "");
+  const [sauceId, setSauceId] = useState(activeSauces.at(0)?.id ?? "");
+  const [zoneId, setZoneId] = useState(activeZones.at(0)?.id ?? "");
+  const [timeSlotId, setTimeSlotId] = useState(activeSlots.at(0)?.id ?? "");
   const [channel, setChannel] = useState<"whatsapp" | "telegram">("whatsapp");
   const [website, setWebsite] = useState("");
   const [error, setError] = useState("");
