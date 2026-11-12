@@ -96,7 +96,7 @@ export default function Home() {
         <div className="container footer-grid">
           <div>
             <a className="brand" href="#top">
-              <img src="/images/logo.PNG" alt="BBQ in MHK" width={48} height={48} />
+              <img loading="lazy" decoding="async" src="/images/logo.d08bcce6840f.webp" alt="BBQ in MHK" width={48} height={48} />
               <div>
                 BBQ <span>in MHK</span>
               </div>

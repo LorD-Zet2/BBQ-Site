@@ -1,12 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
+import SmokerLid from "./SmokerLid";
 import type { CSSProperties } from "react";
 import { shop } from "@/config/shop";
 import styles from "./Hero.module.css";
-
-const SmokerLid = dynamic(() => import("./SmokerLid"), { ssr: false });
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
 const smooth = (value: number) => { const t = clamp(value); return t * t * (3 - 2 * t); };
@@ -116,7 +114,7 @@ export function Hero() {
       <div ref={headerRef} className={styles.headerWrap}>
         {!shop.orderingOpen && <div className={styles.preview}>Знакомьтесь с меню · Приём онлайн-заказов скоро откроется</div>}
         <header className={styles.header}>
-          <a className={styles.brand} href="#top" aria-label="BBQ in MHK — на главную"><img src="/images/logo.PNG" alt="" width={44} height={44} /><span>BBQ <small>in MHK</small></span></a>
+          <a className={styles.brand} href="#top" aria-label="BBQ in MHK — на главную"><img src="/images/logo.d08bcce6840f.webp" alt="" width={44} height={44} /><span>BBQ <small>in MHK</small></span></a>
           <nav className={styles.nav} aria-label="Навигация"><a href="#cat-main">Меню</a><a href="#about-bbq">О настоящем BBQ</a><a href="#ribs">Собрать заказ</a></nav>
           <a href="#ribs" className={styles.headerCta}>{shop.orderingOpen ? "Заказать →" : "Выбрать рёбра →"}</a>
         </header>

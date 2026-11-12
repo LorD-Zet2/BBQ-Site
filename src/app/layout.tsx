@@ -17,6 +17,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ru">
+      <head>
+        <link rel="preload" href="/fonts/BBQ-Slab.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/BBQ-Sans.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/images/smoker-steel-v7.webp" as="image" />
+      </head>
 
       <body>
         <a className="skip-link" href="#main">К основному содержимому</a>

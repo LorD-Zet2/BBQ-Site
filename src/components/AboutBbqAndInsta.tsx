@@ -16,7 +16,7 @@ export function AboutBbqAndInsta() {
           <div className="edu-grid">
             <article className="edu-card">
               <div className="edu-img-wrap">
-                <img src="/images/bark.png" alt="Тёмная корочка барк на говяжьих рёбрах" />
+                <img loading="lazy" decoding="async" src="/images/bark.ecb4a3e6cf0d.webp" alt="Тёмная корочка барк на говяжьих рёбрах" />
               </div>
               <div className="edu-body">
                 <span className="menu-badge">Барк (Bark)</span>
@@ -29,7 +29,7 @@ export function AboutBbqAndInsta() {
 
             <article className="edu-card">
               <div className="edu-img-wrap">
-                <img src="/images/smoke-ring.png" alt="Розовое дымное кольцо на разрезе мяса" />
+                <img loading="lazy" decoding="async" src="/images/smoke-ring.ed7d96a3c492.webp" alt="Розовое дымное кольцо на разрезе мяса" />
               </div>
               <div className="edu-body">
                 <span className="menu-badge">Smoke Ring</span>
@@ -42,7 +42,7 @@ export function AboutBbqAndInsta() {
 
             <article className="edu-card">
               <div className="edu-img-wrap">
-                <img src="/images/low-and-slow.png" alt="Томление 7-8 часов при низкой температуре" />
+                <img loading="lazy" decoding="async" src="/images/low-and-slow.f01cef8ac40d.webp" alt="Томление 7-8 часов при низкой температуре" />
               </div>
               <div className="edu-body">
                 <span className="menu-badge">Low &amp; Slow</span>
@@ -86,7 +86,7 @@ export function AboutBbqAndInsta() {
         <div className="container">
           <div className="insta-card">
             <div className="insta-media">
-              <img src="/images/kalbi-hero-demo.webp" alt="Свежая партия рёбер BBQ in MHK" />
+              <img loading="lazy" decoding="async" src="/images/kalbi-hero-demo.webp" alt="Свежая партия рёбер BBQ in MHK" />
               <span className="insta-live-badge">Свежее из цеха</span>
             </div>
 
